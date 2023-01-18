@@ -3,24 +3,26 @@ using Chasipanta_SimulacroExamen.Models;
 
 namespace Chasipanta_SimulacroExamen.Views;
 
+[QueryProperty("Item", "Item")]
+
 public partial class BurgerItemPage : ContentPage
 {
-    HamburguesaPCh Item = new HamburguesaPCh();
-    bool _flag;
+    public HamburguesaPCh Item
+    {
+        get => BindingContext as HamburguesaPCh;
+        set => BindingContext = value;
+    }
 
     public BurgerItemPage()
 	{
 		InitializeComponent();
-	}
+        BindingContext = Item;
+    }
 
 	private void OnSaveClicked(object sender, EventArgs e)
 	{
-        Item.Name = nameB.Text;
-        Item.Description = descB.Text;
-        Item.WithExtraCheese = _flag;
         App.BurgerRepo.AddNewBurger(Item);
         Shell.Current.GoToAsync("..");
-
     }
     private void OnCancelClicked(object sender, EventArgs e)
     {
@@ -28,7 +30,12 @@ public partial class BurgerItemPage : ContentPage
     }
     private void OnCheckBoxCheckedChanged(object sender,CheckedChangedEventArgs e)
     {
-        _flag = e.Value;
+        
     }
 
+    private void OnDeletedClicked(object sender, EventArgs e)
+    {
+        App.BurgerRepo.DeleteItem(Item);
+        Shell.Current.GoToAsync("..");
+    }
 }
