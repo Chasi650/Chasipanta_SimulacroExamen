@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace Chasipanta_SimulacroExamen.Data
 {
@@ -26,14 +27,25 @@ namespace Chasipanta_SimulacroExamen.Data
         public int AddNewBurger(HamburguesaPCh burger)
         {
             Init();
-            int result = conn.Insert(burger);
-            return result;
+            if (burger.Id != 0)
+            {
+                return conn.Update(burger);
+            }
+            else
+            {
+                return conn.Insert(burger);
+            }
         }
         public List<HamburguesaPCh> GetAllBurgers()
         {
             Init();
             List<HamburguesaPCh> burgers = conn.Table<HamburguesaPCh>().ToList();
             return burgers;
+        }
+        public int DeleteItem(HamburguesaPCh item)
+        {
+            Init();
+            return conn.Delete(item);
         }
     }
 }
